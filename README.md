@@ -2,5 +2,5 @@
 
 ## Install
 
-install.packages("devtools")
+install.packages("devtools") <br/>
 devtools::install_github("Chieh-Lee/HAZ.TW")

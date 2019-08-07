@@ -7,7 +7,7 @@
 plot_all_map(faultfile)
 }
 \arguments{
-\item{faultfile}{result of \code{\link{read_fault}}}
+\item{faultfile}{list: result of \code{\link{read_fault}}}
 }
 \value{
 leaflet map

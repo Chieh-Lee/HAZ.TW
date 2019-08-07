@@ -1,8 +1,8 @@
 #' @title Table output
 #'
-#' @param path character string : File path. Including all of additional file.
-#' @param faultfile character string : File name of 'fault.src'
-#' @param ID integer : fault ID
+#' @param path character string: File path. Including all of additional file.
+#' @param faultfile character string: File name of 'fault.src'
+#' @param ID integer: fault ID
 #' @export
 #'
 #' @return table of \code{faultfile}

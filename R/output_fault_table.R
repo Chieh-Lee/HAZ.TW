@@ -2,8 +2,8 @@
 #' @description Table of all fault segements,including Fault Name, probAct0, nSeg Model, segWt, nFlt2 and Fault ID.
 #'
 #' @import formattable
-#' @param path character string : File path. Including all of additional file.
-#' @param faultfile character string : File name of 'fault.src'
+#' @param path character: File path. Including all of additional file.
+#' @param faultfile character: File name of 'fault.src'
 #'
 #' @return FName1 : Fault Name.
 #' @return probAct0 : Probability of activity.

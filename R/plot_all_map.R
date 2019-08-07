@@ -1,7 +1,7 @@
 #' @title Plot map of all fault segments
 #'
 #' @importFrom raster raster
-#' @param faultfile result of \code{\link{read_fault}}
+#' @param faultfile list: result of \code{\link{read_fault}}
 #' @export
 #'
 #' @return leaflet map

@@ -7,9 +7,9 @@
 plot_map(faultfile, ID)
 }
 \arguments{
-\item{faultfile}{result of \code{\link{read_fault}}}
+\item{faultfile}{list: result of \code{\link{read_fault}}}
 
-\item{ID}{fault ID}
+\item{ID}{intrger: fault ID}
 }
 \value{
 leaflet map

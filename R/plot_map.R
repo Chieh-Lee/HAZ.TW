@@ -4,8 +4,8 @@
 #' @import randomcoloR
 #' @import sp
 #'
-#' @param faultfile result of \code{\link{read_fault}}
-#' @param ID fault ID
+#' @param faultfile list: result of \code{\link{read_fault}}
+#' @param ID intrger: fault ID
 #'
 #' @export
 #'

@@ -6,8 +6,8 @@
 #' @importFrom stats setNames
 #' @importFrom stats na.omit
 #'
-#' @param path character string : File path. Including all of additional file.
-#' @param faultfile character string : File name of 'fault.src'
+#' @param path character: File path. Including all of additional file.
+#' @param faultfile character: File name of 'fault.src'
 #' @export
 #'
 #' @return a list of \code{faultfile}
@@ -42,7 +42,7 @@ read_fault<-function(path,faultfile){
         ca<-sapply(1:length(ggvalue.3),function(x){
           ifelse(x %in% grep('^[A-Za-z]+', ggvalue.3),
                  ca<-strsplit(as.character(ggvalue.3[x]), "\\s") ,
-                 ca<-strsplit(as.character(ggvalue.3[x]), "\\s") %>% unlist() %>% as.numeric() %>% na.omit() %>% list())
+                 ca<-suppressWarnings(as.numeric(unlist(strsplit(as.character(ggvalue.3[x]), "\\s")))) %>% na.omit() %>% list())
         })
         ggname.3[1]<-'fName';ca<-setNames(ca,ggname.3)
         if (ca[[2]][[1]]==1|ca[[2]][[1]]==2){ #source_type=1|2
@@ -81,7 +81,7 @@ read_fault<-function(path,faultfile){
         ca<-sapply(1:length(ggvalue.3),function(x){
           ifelse(x %in% grep('^[A-Za-z]+', ggvalue.3),
                  ca<-strsplit(as.character(ggvalue.3[x]), "\\s") ,
-                 ca<-strsplit(as.character(ggvalue.3[x]), "\\s") %>% unlist() %>% as.numeric() %>% na.omit() %>% list())
+                 ca<-suppressWarnings(as.numeric(unlist(strsplit(as.character(ggvalue.3[x]), "\\s")))) %>% na.omit() %>% list())
         })
         ggname.3[1]<-'fName';ca<-setNames(ca,ggname.3)
         if (ca[[2]][[1]] == 1 | ca[[2]][[1]] == 2){ #source_type=1|2

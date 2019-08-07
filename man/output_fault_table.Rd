@@ -7,9 +7,9 @@
 output_fault_table(path, faultfile)
 }
 \arguments{
-\item{path}{character string : File path. Including all of additional file.}
+\item{path}{character: File path. Including all of additional file.}
 
-\item{faultfile}{character string : File name of 'fault.src'}
+\item{faultfile}{character: File name of 'fault.src'}
 }
 \value{
 FName1 : Fault Name.

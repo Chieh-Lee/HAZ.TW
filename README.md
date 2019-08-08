@@ -3,7 +3,7 @@
 ## Install
 
 ```
-install.packages("devtools") <br/>
+install.packages("devtools") 
 devtools::install_github("Chieh-Lee/HAZ.TW")
 ```
 

@@ -64,6 +64,7 @@ read_fault<-function(path,faultfile){
 
       if (stype == 1 | stype == 2){ #source_type=1|2
         c1 <- ca[ggn6] %>% unlist() #extract lon/lats
+        c1 <- c1[c1 != 0]
         ca[[length(ca)+1]] <- matrix(c1, (length(c1)/2), 2, byrow = TRUE) %>% data.frame()
         ca[c((5+1):(5+ca[[5]]))] <- NULL #remove lonlatpts
         names(ca)[[length(ca)]] <- "npts_lonlat"

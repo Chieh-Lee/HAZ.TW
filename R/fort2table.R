@@ -11,7 +11,6 @@
 fort2table <- function(faultfile){
   f1 <- scan(faultfile, what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE) %>% data.frame()
   fvalue <- as.character(word(f1[, 1], sep = fixed('\t\t\t'))) 
-  #fvalue <- as.character(word(f1[, 1], sep = fixed('\t\t'))) 
   fvalue <- as.character(gsub("\t{1,}", " ", fvalue)) 
   segname <- grep("@@", fvalue)
   
@@ -104,7 +103,7 @@ fort2table <- function(faultfile){
     if (as.numeric(as.character(df_value[3])) == 1){
       df$'sources' <- df_value[6]
     } else {
-      df$'sources' <- paste(df_value[6 : (6 + as.numeric(as.character(df_value[3])) - 1)], collapse="\n")
+      df$'sources' <- paste(df_value[6 : (6 + as.numeric(as.character(df_value[3])) - 1)], collapse = "\n")
     }
     
 

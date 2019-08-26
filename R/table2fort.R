@@ -10,6 +10,7 @@
 #' @return fortran file of \code{faultfile}
 
 table2fort <- function(icoor, inputfile, outputname){
+  if (file.exists(outputname)) warning('File exists. Please set a new outputname.')
   aa <- inputfile
   pp <- function(paravalue, paraname){
     if (length(paravalue) == 0) warning(paste0('Missing parameter:', paraname, ' (Fault: ', i, '; Segment:', j, ')'))

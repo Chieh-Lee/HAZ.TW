@@ -148,7 +148,7 @@ fort2table <- function(faultfile){
       if (length(grep('^nTHick|number of fault thickness|number of fault widths', dn3[, 1])) != 0){
         n_thick <- dn3[grep('^nTHick|number of fault thickness|number of fault widths', dn3[, 1]), 'seg']
         n_thick <- as.numeric(as.character(n_thick$.))
-        if (n_thick != length(grep('weights for max mag', dn3[, 1]))) stop('Missing parameters: weights for max mag')
+        if (n_thick != length(grep('weights for max mag', dn3[, 1]))) stop(paste0('Missing parameters: weights for max mag (Fault:', i, ' Segment:', k, ')'))
         n <- rep(1:n_thick)
         dn3[grep('^number of maximum magnitudes', dn3[, 1]), 1] <- paste(dn3[grep('^number of maximum magnitudes', dn3[, 1]), 1], 'for model', n, sep = ' ')
         dn3[grep('^maximum magnitudes|^reference magnitude', dn3[, 1]), 1] <- paste(dn3[grep('^maximum magnitudes|^reference magnitude', dn3[, 1]), 1], 'for model', n, sep = ' ')
@@ -159,7 +159,7 @@ fort2table <- function(faultfile){
       if (length(grep('nRecur', dn3[, 1])) != 0){
         n_recur <- dn3[grep('nRecur', dn3[, 1]), 'seg']
         n_recur <- as.numeric(as.character(n_recur$.))
-        if (n_recur != length(grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]))) stop('Missing parameters: delta_M1, delta_M2, delta_M3')
+        if (n_recur != length(grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]))) stop(paste0('Missing parameters: delta_M1, delta_M2, delta_M3 (Fault:', i, ' Segment:', k, ')'))
         dn3[grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]), 1] <- funfun("n_recur")
       }
       
@@ -167,7 +167,7 @@ fort2table <- function(faultfile){
         n_ftype <- dn3[grep('Fault Mechanism Models', dn3[, 1]), 'seg']
         n_ftype <- as.numeric(as.character(n_ftype$.))
         nth <- c((grep('Fault Mechanism Models', dn3[, 1]) + 1) : (grep('Fault Mechanism Models', dn3[, 1]) + 4 * n_ftype))
-        if (n_ftype != (length(nth)/4)) stop('Missing parameters about Fault Mechanism Models')
+        if (n_ftype != (length(nth)/4)) stop(paste0('Missing parameters about Fault Mechanism Models (Fault:', i, ' Segment:', k, ')' ))
         dn3[nth, 1] <- funfun("n_ftype")
       }
       

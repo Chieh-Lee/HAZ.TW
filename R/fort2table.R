@@ -229,7 +229,7 @@ fort2table <- function(faultfile){
            all_2 <- merge(all_2, all_1, all = TRUE))
   
   }
-  all_2 <- arrange(all_2, all_2$faultID, all_2$segID)
+  all_2 <- dplyr::arrange(all_2, all_2$faultID, all_2$segID)
 
   return(all_2)
 }

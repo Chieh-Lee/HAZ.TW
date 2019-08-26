@@ -129,11 +129,8 @@ table2fort <- function(icoor, inputfile, outputname){
       #nRecint 
       seg_ot2_ri1 <- segdata[, grep('^number of rec', names(segdata))] %>% pp(paraname = 'number of rec int')
       if (as.numeric(substr(seg_ot2_ri1, 0, 2)) > 0){
-        ri1 <- segdata[, grep('^recint', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^rmoRate Depth', names(segdata))])
-        ri2 <- segdata[, grep('^weights for recint|^wts for recint|^wt_recint', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^weights for moRate|w^eights for MoRate|^wts for moRate|^wts for Morate', names(segdata))])
-        
+        ri1 <- segdata[, grep('^recint', names(segdata))] %>% pp(paraname = 'recint')
+        ri2 <- segdata[, grep('^weights for recint|^wts for recint|^wt_recint', names(segdata))] %>% pp(paraname = 'weights for recint')
         ri <- cbind(ri1, ri2) %>% t() %>% as.vector()
         seg_ot2_ri2 <- combine_words(ri, sep = '\r\n', and = '')
         
@@ -145,12 +142,9 @@ table2fort <- function(icoor, inputfile, outputname){
       #moment rates
       seg_ot2_mr1 <- segdata[, grep('^number of moment rates|^number MoRates', names(segdata))] %>% pp(paraname = 'number of moment rates')
       if (as.numeric(substr(seg_ot2_mr1, 0, 2)) > 0){
-        mr1 <- segdata[, grep('^moRate', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^moRate', names(segdata))])
-        mr2 <- segdata[, grep('^moRate Depth', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^rmoRate Depth', names(segdata))])
-        mr3 <- segdata[, grep('^weights for moRate|^weights for MoRate|^wts for moRate|^wts for Morate|^wt_MoRate', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^weights for moRate|^weights for MoRate|^wts for moRate|^wts for Morate', names(segdata))])
+        mr1 <- segdata[, grep('^moRate', names(segdata))] %>% pp(paraname = 'moRate')
+        mr2 <- segdata[, grep('^moRate Depth', names(segdata))] %>% pp(paraname = 'moRate Depth')
+        mr3 <- segdata[, grep('^weights for moRate|^weights for MoRate|^wts for moRate|^wts for Morate|^wt_MoRate', names(segdata))] %>% pp(paraname = 'weights for moRate')
         
         mr <- cbind(mr1, mr2, mr3) %>% t() %>% as.vector()
         seg_ot2_mr2 <- combine_words(mr, sep = '\r\n', and = '')
@@ -162,7 +156,7 @@ table2fort <- function(icoor, inputfile, outputname){
       
       #nRecur 
       seg_ot2_nrecur1 <- segdata[, grep('^nRecur', names(segdata))] %>% pp(paraname = 'nRecur')
-      seg_ot2_nrecur2 <- segdata[, grep('^recur model', names(segdata))] %>% pp(paraname = 'Recur model (0=Char, 1=exp, 3=max mag,6=BC Hydro Char)')
+      seg_ot2_nrecur2 <- segdata[, grep('^recur model', names(segdata))] %>% pp(paraname = 'Recur model (0=Char, 1=exp, 3=max mag, 6=BC Hydro Char)')
       seg_ot2_nrecur3 <- segdata[, grep('^char mag recurrence', names(segdata))] %>% pp(paraname = 'char mag recurrence, exponential mag recurrence weights')
       if (as.numeric(substr(seg_ot2_nrecur1, 0, 2)) > 0){
         seg_ot2_nrecur4 <- segdata[, grep('^delta_M1', names(segdata))] %>% pp(paraname = names(segdata)[grep('^delta_M1', names(segdata))])
@@ -176,12 +170,9 @@ table2fort <- function(icoor, inputfile, outputname){
       if (stype == 5){  #if source type == 5, skip nTHick, fault thickness, wts for fault thickness
         seg_ot2_nthick4 <- segdata[, grep('^depth pdf model', names(segdata))] %>% pp(paraname = 'depth pdf model and parameters')
         
-        th1 <- segdata[, grep('^number of maximum magnitudes', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^number of maximum magnitudes', names(segdata))])
-        th2 <- segdata[, grep('^reference magnitude|^maximum magnitudes', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^reference magnitude', names(segdata))])
-        th3 <- segdata[, grep('^weights for max mag', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^weights for max mag', names(segdata))])
+        th1 <- segdata[, grep('^number of maximum magnitudes', names(segdata))] %>% pp(paraname = 'number of maximum magnitudes')
+        th2 <- segdata[, grep('^reference magnitude|^maximum magnitudes', names(segdata))] %>% pp(paraname = 'reference magnitude')
+        th3 <- segdata[, grep('^weights for max mag', names(segdata))] %>% pp(paraname = 'weights for max mag')
         
         nthick <- cbind(th1, th2, th3) %>% t() %>% as.vector()
         seg_ot2_nthick5 <- combine_words(nthick, sep = '\r\n', and = '')
@@ -194,12 +185,9 @@ table2fort <- function(icoor, inputfile, outputname){
         seg_ot2_nthick3 <- segdata[, grep('^thickness weighting|weights for fault thickness|weights for fault widths', names(segdata))] %>% pp(paraname = 'thickness weighting')
         seg_ot2_nthick4 <- segdata[, grep('^depth pdf model', names(segdata))] %>% pp(paraname = 'depth pdf model and parameters')
         if (as.numeric(substr(seg_ot2_nthick1, 0, 2)) > 0){
-          th1 <- segdata[, grep('^number of maximum magnitudes', names(segdata))] %>% 
-            pp(paraname = names(segdata)[grep('^number of maximum magnitudes', names(segdata))])
-          th2 <- segdata[, grep('^reference magnitude|^maximum magnitudes', names(segdata))] %>% 
-            pp(paraname = names(segdata)[grep('^reference magnitude', names(segdata))])
-          th3 <- segdata[, grep('^weights for max mag', names(segdata))] %>% 
-            pp(paraname = names(segdata)[grep('^weights for max mag', names(segdata))])
+          th1 <- segdata[, grep('^number of maximum magnitudes', names(segdata))] %>% pp(paraname = 'number of maximum magnitudes')
+          th2 <- segdata[, grep('^reference magnitude|^maximum magnitudes', names(segdata))] %>% pp(paraname = 'reference magnitude')
+          th3 <- segdata[, grep('^weights for max mag', names(segdata))] %>% pp(paraname = 'weights for max mag')
           
           nthick <- cbind(th1, th2, th3) %>% t() %>% as.vector()
           seg_ot2_nthick5 <- combine_words(nthick, sep = '\r\n', and = '')
@@ -217,14 +205,10 @@ table2fort <- function(icoor, inputfile, outputname){
       #number of Fault Mechanism Models
       seg_ot2_fm1 <- segdata[, grep('^number of Fault Mechanism Models', names(segdata))] %>% pp(paraname = 'number of Fault Mechanism Models')
       if (as.numeric(substr(seg_ot2_fm1, 0, 2)) > 0){
-        fm1 <- segdata[, grep('^fault Mech Model Wt', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^fault Mech Model Wt', names(segdata))])
-        fm2 <- segdata[, grep('^number of mechanisms', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^number of mechanisms', names(segdata))])
-        fm3 <- segdata[, grep('^ftype', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^ftype', names(segdata))])
-        fm4 <- segdata[, grep('^wts', names(segdata))] %>% 
-          pp(paraname = names(segdata)[grep('^wts', names(segdata))])
+        fm1 <- segdata[, grep('^fault Mech Model Wt', names(segdata))] %>% pp(paraname = 'fault Mech Model Wt')
+        fm2 <- segdata[, grep('^number of mechanisms', names(segdata))] %>% pp(paraname = 'number of mechanisms')
+        fm3 <- segdata[, grep('^ftype', names(segdata))] %>% pp(paraname = 'ftype')
+        fm4 <- segdata[, grep('^wts', names(segdata))] %>% pp(paraname = 'wts')
         
         fm <- cbind(fm1, fm2, fm3, fm4) %>% t() %>% as.vector()
         seg_ot2_fm2 <- combine_words(fm, sep = '\r\n', and = '')

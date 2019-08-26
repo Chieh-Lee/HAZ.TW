@@ -13,3 +13,6 @@ NeedsCompilation: no
 Packaged: 2019-02-14 09:14:02 UTC; chieh
 Author: YiChieh lee
 Maintainer: First Last <first.last@example.com>
+VignetteBuilder: knitr
+Suggests: 
+    rmarkdown

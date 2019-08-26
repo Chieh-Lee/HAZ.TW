@@ -1,0 +1,90 @@
+---
+title: "haztw_vignette"
+author: Yi-Chieh Lee
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{haztw_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>"
+# )
+knitr::opts_knit$set(
+  collapse = TRUE,
+  root.dir = '/Users/chieh/Desktop/Sinotech_08/TW_all/data source'
+)
+```
+
+```{r setup}
+library(magrittr)
+library(kableExtra)
+library(HAZ.TW)
+path <- '/Users/chieh/Desktop/Sinotech_08/TW_all/data source'
+faultfile <- 'AllSource_NTW_WM#6_0531.dat'
+```
+
+## read_fault  
+Read the fault file and return a list.   
+In this function, you should set up two parameters, `path` and `faultfile`. `Path` is the file where including all of the additional file, such as regional source earthquake location. `Faultfile` is the file name of fault information with FORTRAN formats.
+
+```{r read_fault}
+read_f <- read_fault(path, faultfile)
+# return a list of 64 faults.
+```
+
+## fort2table  
+This function can let the FORTRAN file transform to the table formats in R. Just put the `faultfile` name in the function.
+
+```{r fort2table}
+setwd(path)
+f2t <- fort2table(faultfile)
+# return a table 
+kable(f2t) %>% kable_styling() %>% scroll_box(height = '800px')
+```
+
+
+## table2fort 
+This function can let the table formats in R transform to the FORTRAN file. You should set up three parameters, `icoor`, `inputfile` and `outputname`. `icoor` is the unit of source coordinate (0 is km, 1 is latitude and longitude), `inputfile` is the result of **fort2table** and `outputname` is the name of output file. The output file will save to the root path.
+
+```{r table2fort}
+# set icoor == 1
+t2f <- table2fort(1, f2t, 'f2t.txt')
+# output the table to .txt file
+head(t2f)
+```
+
+
+## plot_all
+This function can plot all fault and segment on the map. Just put the result of **read_fault** in the function. In this figure, you can click each segment and get it's name.
+
+```{r plot_all}
+plotall <- plot_all(read_f)
+# return a leaflet map
+plotall
+```
+
+
+## plot_segment  
+This function can plot the specific fault or segment on the map. Just put the `faultfile` name and the `ID` of fault in the function. By the function **read_fault** or **fort2table**, you can get the ID of fault. In this figure, you can click each segment and get it's name.
+```{r plot_segment}
+plotseg <- plot_segment(read_f, 7:10)
+#return a leaflet map
+plotseg
+```
+
+
+## fig_information 
+If you have some shapefile, you can use this function to get the attribute table of the shapefile.  
+In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
+
+```{r fig_information}
+setwd(path)
+figinfo <- fig_information('SSHAC_Fault.TAB', 'figinfo.txt')
+kable(figinfo) %>% kable_styling() %>% scroll_box(height = '800px')
+```
+
+

@@ -159,7 +159,7 @@ fort2table <- function(faultfile){
       if (length(grep('nRecur', dn3[, 1])) != 0){
         n_recur <- dn3[grep('nRecur', dn3[, 1]), 'seg']
         n_recur <- as.numeric(as.character(n_recur$.))
-        if (n_recur != length(grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3', dn3[, 1]))) stop('Missing parameters: delta_M1, delta_M2,delta_M3')
+        if (n_recur != length(grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]))) stop('Missing parameters: delta_M1, delta_M2, delta_M3')
         dn3[grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3', dn3[, 1]), 1] <- funfun("n_recur")
       }
       

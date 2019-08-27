@@ -1,6 +1,6 @@
 Package: HAZ.TW
 Title: HAZ
-Version: 2019.08
+Version: 0.1.0
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: HAZ test for Taiwan.
 Imports: dplyr, formattable, knitr, leaflet, magrittr, plyr, raster, randomcoloR, sf, stringr, sp

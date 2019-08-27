@@ -9,10 +9,6 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-# knitr::opts_chunk$set(
-#   collapse = TRUE,
-#   comment = "#>"
-# )
 knitr::opts_knit$set(
   collapse = TRUE,
   root.dir = '/Users/chieh/Desktop/Sinotech_08/TW_all/data source'
@@ -20,10 +16,7 @@ knitr::opts_knit$set(
 ```
 
 ```{r setup}
-library(magrittr)
-library(formattable)
 library(HAZ.TW)
-path <- '/Users/chieh/Desktop/Sinotech_08/TW_all/data source'
 faultfile <- 'AllSource_NTW_WM#6_0531.dat'
 ```
 
@@ -88,9 +81,16 @@ If you have some shapefile, you can use this function to get the attribute table
 In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
 
 ```{r fig_information}
-#finfo <- figinfo('SSHAC_Fault.TAB', 'figinfo.txt')
+finfo <- figinfo('SSHAC_Fault.TAB', 'figinfo.txt')
 # output the table to .txt file
-#head(finfo)
+#
+##   ID          Name Length_km FaultType Segment SourceType npts
+## 1  1 Ryukyu trench         0        RV      R1  Interface    9
+## 2  1 Ryukyu trench         0        RV      R2  Interface    8
+## 3  1 Ryukyu trench         0        RV      R3  Interface    7
+## 4  2 Manila Trench         0        RV      D1  Interface    5
+## 5  2 Manila Trench         0        RV      D2  Interface    8
+## 6  2 Manila Trench         0        RV      D3  Interface    6
 ```
 
 

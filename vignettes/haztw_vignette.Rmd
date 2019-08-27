@@ -24,7 +24,7 @@ Read the fault file and return a list.
 In this function, you should set up two parameters, `path` and `faultfile`. `Path` is the file where including all of the additional file, such as regional source earthquake location. `Faultfile` is the file name of fault information with FORTRAN formats.
 
 ```{r read_fault}
-#read_f <- read_fault('data source/AllSource_NTW_WM#6_0531.dat')
+read_f <- read_fault('data source/AllSource_NTW_WM#6_0531.dat')
 # return a list of 64 faults.
 ```
 
@@ -32,7 +32,7 @@ In this function, you should set up two parameters, `path` and `faultfile`. `Pat
 This function can let the FORTRAN file transform to the table formats in R. Just put the `faultfile` name in the function.
 
 ```{r fort2table}
-#f2t <- fort2table('data source/AllSource_NTW_WM#6_0531.dat')
+f2t <- fort2table('data source/AllSource_NTW_WM#6_0531.dat')
 # return a table 
 ```
 
@@ -42,7 +42,7 @@ This function can let the table formats in R transform to the FORTRAN file. You 
 
 ```{r table2fort}
 # set icoor == 1
-#t2f <- table2fort(1, f2t, 'f2t.txt')
+t2f <- table2fort(1, f2t, 'f2t.txt')
 # output the table to .txt file
 #
 ## 1
@@ -60,18 +60,18 @@ This function can let the table formats in R transform to the FORTRAN file. You 
 This function can plot all fault and segment on the map. Just put the result of **read_fault** in the function. In this figure, you can click each segment and get it's name.
 
 ```{r plot_all}
-#plotall <- plot_all(read_f)
+plotall <- plot_all(read_f)
 # return a leaflet map
-#plotall
+plotall
 ```
 
 
 ## plot_segment  
 This function can plot the specific fault or segment on the map. Just put the `faultfile` name and the `ID` of fault in the function. By the function **read_fault** or **fort2table**, you can get the ID of fault. In this figure, you can click each segment and get it's name.
 ```{r plot_segment}
-#plotseg <- plot_segment(read_f, 7:10)
+plotseg <- plot_segment(read_f, 7:10)
 # return a leaflet map
-#plotseg
+plotseg
 ```
 
 
@@ -80,7 +80,7 @@ If you have some shapefile, you can use this function to get the attribute table
 In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
 
 ```{r fig_information}
-#finfo <- figinfo('SSHAC_Fault.TAB', 'figinfo.txt')
+finfo <- figinfo('data source/SSHAC_Fault.TAB', 'figinfo.txt')
 # output the table to .txt file
 #
 ##   ID          Name Length_km FaultType Segment SourceType npts

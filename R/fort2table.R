@@ -65,7 +65,7 @@ fort2table <- function(faultfile){
         
       } else if ( stype == 3 | stype == 4) { #source_type=3|4
         ca[[5]] <- as.character(ca[[5]])
-        Data <- scan(ca[[5]], what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
+        Data <- scan(here::here(dirname(faultfile), ca[[5]]), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
         D1_1 <- Data[1:3] #information
         D1_2 <- Data[4:length(Data)]; D1_2 <- unlist(str_split(D1_2, " ")) #location
         D1_3 <- matrix(D1_2, (length(D1_2)/3), 3, byrow = TRUE) %>% data.frame()

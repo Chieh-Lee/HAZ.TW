@@ -6,15 +6,13 @@
 #' @importFrom stats setNames
 #' @importFrom stats na.omit
 #'
-#' @param path character: File path. Including all of additional file.
 #' @param faultfile character: File name of 'fault.src'
 #' @export
 #'
 #' @return a list of \code{faultfile}
 
 
-read_fault<-function(path,faultfile){
-  setwd(path)
+read_fault<-function(faultfile){
   f1 <- scan(faultfile, what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE) %>% data.frame()
   fvalue <- as.character(word(f1[, 1], sep = fixed('\t\t'))) %>% data.frame()
   fvalue <- as.character(gsub("\t{1,}", " ", fvalue[, 1]), 1) %>% data.frame()

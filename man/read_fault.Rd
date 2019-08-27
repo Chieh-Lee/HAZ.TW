@@ -4,11 +4,9 @@
 \alias{read_fault}
 \title{Read file about fault.src}
 \usage{
-read_fault(path, faultfile)
+read_fault(faultfile)
 }
 \arguments{
-\item{path}{character: File path. Including all of additional file.}
-
 \item{faultfile}{character: File name of 'fault.src'}
 }
 \value{

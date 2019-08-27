@@ -56,5 +56,5 @@ figinfo <- function(tabfile, outputname){
       write.table(cc, file = outputname, quote = FALSE, row.names = FALSE, col.names = FALSE, na = "NA", append = TRUE)
     }
   }
- return(cc)
+ return(df)
 }

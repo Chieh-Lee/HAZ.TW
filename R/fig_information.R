@@ -10,7 +10,7 @@
 #' @return table of \code{tabfile}
 
 
-fig_information <- function(tabfile, outputname){
+figinfo <- function(tabfile, outputname){
   dfall <- st_read(tabfile) %>% data.frame()
 
   #df = data exclude lon/lat geometry

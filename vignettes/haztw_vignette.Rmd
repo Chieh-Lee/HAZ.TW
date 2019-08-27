@@ -40,10 +40,8 @@ read_f <- read_fault(path, faultfile)
 This function can let the FORTRAN file transform to the table formats in R. Just put the `faultfile` name in the function.
 
 ```{r fort2table}
-setwd(path)
 f2t <- fort2table(faultfile)
 # return a table 
-#kable(f2t) %>% kable_styling() %>% scroll_box(height = '800px')
 ```
 
 
@@ -54,7 +52,7 @@ This function can let the table formats in R transform to the FORTRAN file. You 
 # set icoor == 1
 t2f <- table2fort(1, f2t, 'f2t.txt')
 # output the table to .txt file
-head(t2f)
+head(t2f) 
 ```
 
 
@@ -82,11 +80,8 @@ If you have some shapefile, you can use this function to get the attribute table
 In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
 
 ```{r fig_information}
-setwd(path)
-figinfo <- fig_information('SSHAC_Fault.TAB', 'figinfo.txt')
-#formattable(figinfo)
-            #align = c("l",rep("r", NCOL(figinfo))))
-#kable(figinfo) %>% kable_styling() %>% scroll_box(height = '800px')
+#figinfo <- HAZ.TW::fig_information('SSHAC_Fault.TAB', 'figinfo.txt')
+#formattable(figinfo, align = c("l",rep("r", NCOL(figinfo))))
 ```
 
 

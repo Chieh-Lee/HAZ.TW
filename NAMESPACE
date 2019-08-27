@@ -2,13 +2,11 @@
 
 export(fig_information)
 export(fort2table)
-export(output_segment_table)
 export(plot_all)
 export(plot_segment)
 export(read_fault)
 export(table2fort)
 import(dplyr)
-import(formattable)
 import(knitr)
 import(leaflet)
 import(magrittr)

@@ -21,7 +21,7 @@ knitr::opts_knit$set(
 
 ```{r setup}
 library(magrittr)
-library(kableExtra)
+library(formattable)
 library(HAZ.TW)
 path <- '/Users/chieh/Desktop/Sinotech_08/TW_all/data source'
 faultfile <- 'AllSource_NTW_WM#6_0531.dat'
@@ -43,7 +43,7 @@ This function can let the FORTRAN file transform to the table formats in R. Just
 setwd(path)
 f2t <- fort2table(faultfile)
 # return a table 
-kable(f2t) %>% kable_styling() %>% scroll_box(height = '800px')
+#kable(f2t) %>% kable_styling() %>% scroll_box(height = '800px')
 ```
 
 
@@ -84,7 +84,9 @@ In this function, you should set up two parameters, `tabfile` and `newname`, the
 ```{r fig_information}
 setwd(path)
 figinfo <- fig_information('SSHAC_Fault.TAB', 'figinfo.txt')
-kable(figinfo) %>% kable_styling() %>% scroll_box(height = '800px')
+#formattable(figinfo)
+            #align = c("l",rep("r", NCOL(figinfo))))
+#kable(figinfo) %>% kable_styling() %>% scroll_box(height = '800px')
 ```
 
 

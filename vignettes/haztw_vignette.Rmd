@@ -46,14 +46,14 @@ This function can let the table formats in R transform to the FORTRAN file. You 
 t2f <- table2fort(1, f2t, 'f2t.txt')
 # output the table to .txt file
 #
-# 1
-# 64
-# @@Areal_Shallow and_Beneath_Interface_Crustal_Zone
-# 1.0		Prob Activity
-# 3		nseg model
-# 0.20 0.60 0.20		wts for nseg models
-# 79		total nb of sources
-# ...
+## 1
+## 64
+## @@Areal_Shallow and_Beneath_Interface_Crustal_Zone
+## 1.0		Prob Activity
+## 3		nseg model
+## 0.20 0.60 0.20		wts for nseg models
+## 79		total nb of sources
+## ...
 ```
 
 
@@ -76,7 +76,7 @@ plotseg
 ```
 
 
-## fig_information 
+## figinfo 
 If you have some shapefile, you can use this function to get the attribute table of the shapefile.  
 In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
 

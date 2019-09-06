@@ -19,30 +19,32 @@ knitr::opts_knit$set(
 library(HAZ.TW)
 ```
 
-## read_fault  
-Read the fault file and return a list.   
-In this function, you should set up two parameters, `path` and `faultfile`. `Path` is the file where including all of the additional file, such as regional source earthquake location. `Faultfile` is the file name of fault information with FORTRAN formats.
+## examine_haz_src  
+Before read the fault.src, we should check the note in the fault.src file is correct or not to avoid the warning or error message.  
+In this function, you should set up two parameters, `fault.src` and `fault_output`, the former one is the original file name of fault.src and the second one is the new name of fault.src.
 
-```{r read_fault}
-read_f <- read_fault('data source/AllSource_NTW_WM#6_0531.dat')
-# return a list of 64 faults.
+```{r examine_haz_src}
+# examine_haz_src(fault.src = 'data source/TW_all_cgs_14BT.txt',
+#                 fault_output = 'data source/new_TW_all_cgs_14BT.txt')
 ```
 
-## fort2table  
-This function can let the FORTRAN file transform to the table formats in R. Just put the `faultfile` name in the function.
 
-```{r fort2table}
-f2t <- fort2table('data source/AllSource_NTW_WM#6_0531.dat')
+## read_haz_src
+
+After the step of examine data.We can use **read_haz_src** to read the fault file. This function can let the FORTRAN file transform to the table formats in R. Just put the `fault.src` name in the function.
+
+```{r read_haz_src}
+#read_f <- read_haz_src(fault.src = 'data source/new_TW_all_cgs_14BT.txt')
 # return a table 
 ```
 
 
-## table2fort 
-This function can let the table formats in R transform to the FORTRAN file. You should set up three parameters, `icoor`, `inputfile` and `outputname`. `icoor` is the unit of source coordinate (0 is km, 1 is latitude and longitude), `inputfile` is the result of **fort2table** and `outputname` is the name of output file. The output file will save to the root path.
+## write_haz_src  
+This function can let the table formats in R transform to the FORTRAN file. You should set up three parameters, `icoor`, `faults` and `fault_out.src`. `icoor` is the unit of source coordinate (0 is km, 1 is latitude and longitude) and default is 1, `faults` is the result of **read_haz_src** and `fault_out.src` is the name of output file. The output file will save to the root path.
 
-```{r table2fort}
+```{r write_haz_src}
 # set icoor == 1
-t2f <- table2fort(1, f2t, 'f2t.txt')
+##write_f <- write_haz_src(icoor =  1, faults = read_f, fault_out.src = 'read_f.txt')
 # output the table to .txt file
 #
 ## 1
@@ -60,36 +62,58 @@ t2f <- table2fort(1, f2t, 'f2t.txt')
 This function can plot all fault and segment on the map. Just put the result of **read_fault** in the function. In this figure, you can click each segment and get it's name.
 
 ```{r plot_all}
-plotall <- plot_all(read_f)
-# return a leaflet map
-plotall
+# plotall <- plot_all(read_f)
+# # return a leaflet map
+# plotall
 ```
 
 
 ## plot_segment  
-This function can plot the specific fault or segment on the map. Just put the `faultfile` name and the `ID` of fault in the function. By the function **read_fault** or **fort2table**, you can get the ID of fault. In this figure, you can click each segment and get it's name.
-```{r plot_segment}
-plotseg <- plot_segment(read_f, 7:10)
-# return a leaflet map
-plotseg
-```
+<!-- This function can plot the specific fault or segment on the map. Just put the `faultfile` name and the `ID` of fault in the function. By the function **read_haz_src**, you can get the ID of fault. In this figure, you can click each segment and get it's name. -->
+<!-- ```{r plot_segment} -->
+<!-- plotseg <- plot_segment(read_f, 7:10) -->
+<!-- # return a leaflet map -->
+<!-- plotseg -->
+<!-- ``` -->
 
 
 ## figinfo 
-If you have some shapefile, you can use this function to get the attribute table of the shapefile.  
-In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table.
+<!-- If you have some shapefile, you can use this function to get the attribute table of the shapefile.   -->
+<!-- In this function, you should set up two parameters, `tabfile` and `newname`, the former means the name of the shapefile and the latter is the file name of the attribute table. -->
 
 ```{r fig_information}
-finfo <- figinfo('data source/SSHAC_Fault.TAB', 'figinfo.txt')
-# output the table to .txt file
-#
-##   ID          Name Length_km FaultType Segment SourceType npts
-## 1  1 Ryukyu trench         0        RV      R1  Interface    9
-## 2  1 Ryukyu trench         0        RV      R2  Interface    8
-## 3  1 Ryukyu trench         0        RV      R3  Interface    7
-## 4  2 Manila Trench         0        RV      D1  Interface    5
-## 5  2 Manila Trench         0        RV      D2  Interface    8
-## 6  2 Manila Trench         0        RV      D3  Interface    6
+# finfo <- figinfo('data source/SSHAC_Fault.TAB', 'figinfo.txt')
+# # output the table to .txt file
+# #
+# ##   ID          Name Length_km FaultType Segment SourceType npts
+# ## 1  1 Ryukyu trench         0        RV      R1  Interface    9
+# ## 2  1 Ryukyu trench         0        RV      R2  Interface    8
+# ## 3  1 Ryukyu trench         0        RV      R3  Interface    7
+# ## 4  2 Manila Trench         0        RV      D1  Interface    5
+# ## 5  2 Manila Trench         0        RV      D2  Interface    8
+# ## 6  2 Manila Trench         0        RV      D3  Interface    6
 ```
 
+
+
+
+
+## read_haz_gis
+You can use this function to read the shapefile or any format in GIS. Just set the file name of figure as parameter and it will return an attribute table of `fault_tab`.
+
+```{r read_haz_gis}
+#read_g <- read_haz_gis(fault_tab = 'data source/SSHAC_Fault.TAB')
+```
+
+## plot_haz_gis
+This function can help you to demonstrate the figure of `fault_tab`. Just set the result name of **read_haz_gis** as parameter and it will return a map with some information about faults and segments to you.  
+```{r plot_haz_gis}
+#plot_haz_gis(fault_gis = read_g)
+```
+
+## write_haz_gis
+After check
+```{r write_haz_gis}
+#write_haz_gis(fault_gis, fault_gis_out, driver = "MapInfo File")
+```
 

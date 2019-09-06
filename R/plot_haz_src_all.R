@@ -1,15 +1,15 @@
 #' @title Plot map of all fault segments
 #'
 #' @importFrom raster raster
-#' @param faultfile list: result of \code{\link{read_fault}}
+#' @param faults list: result of \code{\link{read_haz_src}}
 #' @export
 #'
 #' @return leaflet map
 
 
-plot_all <- function(faultfile){
+plot_haz_src_all <- function(faults){
   palette <- distinctColorPalette(20)
-  gg.2 <- faultfile
+  gg.2 <- faults
 
   map<-leaflet() %>% addTiles()
   for (i in c(1:(length(gg.2)))){

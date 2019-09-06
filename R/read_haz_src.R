@@ -1,15 +1,20 @@
 #' @title Fortran to Table
 #'
-#' @import knitr
-#' @import utils
-#' @param faultfile character string: File name of 'fault.src'
+#' @import dplyr
+#' @import here
+#' @import stringr
+#' @import magrittr
+#' @importFrom stats setNames
+#' @importFrom stats na.omit
+#' 
+#' @param fault.src character: File name of 'fault.src'
 #' 
 #' @export
 #'
-#' @return table of \code{faultfile}
+#' @return table of \code{fault.src}
 
-fort2table <- function(faultfile){
-  f1 <- scan(faultfile, what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE) %>% data.frame()
+read_haz_src <- function(fault.src){
+  f1 <- scan(fault.src, what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE) %>% data.frame()
   fvalue <- as.character(word(f1[, 1], sep = fixed('\t\t\t'))) 
   fvalue <- as.character(gsub("\t{1,}", " ", fvalue)) 
   segname <- grep("@@", fvalue)
@@ -29,8 +34,8 @@ fort2table <- function(faultfile){
     return(list(ggname, ggvalue))
   })
   
-  data <- lapply(1:length(all), function(i){
-    no_seg <- grep('^[A-Z]+', all[[i]][[2]])
+  data <- lapply(1:length(all), function(i){ 
+    no_seg <- grep('^[A-Z]+|^\'', all[[i]][[2]])
     lapply(1:length(no_seg), function(k){
       if (k < length(no_seg)) {
         ggvalue.3 <- data.frame(all[[i]][[2]])[(no_seg[k]) : (no_seg[k + 1] - 1), 1]
@@ -48,7 +53,7 @@ fort2table <- function(faultfile){
       ggn6 <- setdiff(ggn4, ggn5)
       
       ca <- sapply( 1:length(ggvalue.3), function(x){
-        ifelse(x %in% grep('^[A-Za-z]+', ggvalue.3),
+        ifelse(x %in% !grepl('^[0-9]+|\\.', ggvalue.3),
                ca <- strsplit(as.character(ggvalue.3[x]), "\\s") ,
                ca <- suppressWarnings(as.numeric(unlist(strsplit(as.character(ggvalue.3[x]), "\\s")))) %>% na.omit() %>% list())
       })
@@ -65,7 +70,7 @@ fort2table <- function(faultfile){
         
       } else if ( stype == 3 | stype == 4) { #source_type=3|4
         ca[[5]] <- as.character(ca[[5]])
-        Data <- scan(here::here(dirname(faultfile), ca[[5]]), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
+        Data <- scan(here::here(dirname(fault.src), ca[[5]]), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
         D1_1 <- Data[1:3] #information
         D1_2 <- Data[4:length(Data)]; D1_2 <- unlist(str_split(D1_2, " ")) #location
         D1_3 <- matrix(D1_2, (length(D1_2)/3), 3, byrow = TRUE) %>% data.frame()
@@ -85,6 +90,27 @@ fort2table <- function(faultfile){
     })
   })
   
+  firstup <- function(x) {
+    substr(x, 1, 1) <- tolower(substr(x, 1, 1))
+    x
+  }
+  funfun <- function(nseq){
+    newname <- matrix()
+    if (nseq == "n_ftype"){
+      if (n_ftype > 0){
+        namelist <- c('fault Mech Model Wt for model', 'number of mechanisms for model', 
+                      'ftype for model', 'wts for observation for model')
+        n <- rep(1:n_ftype, each = 4)
+        newname <- paste0(namelist, n)
+      }
+    } else if (nseq == 'n_recur'){
+      if (n_recur > 0){
+        n <- rep(1:n_recur)
+        newname <- paste0('delta_M1, delta_M2, delta_M3 for model', n)
+      }
+    } 
+    return (newname)
+  }
   all_2 <- data.frame()
   
   for( i in 1:length(all)){ 
@@ -92,7 +118,8 @@ fort2table <- function(faultfile){
     df_value <- all[[i]][[2]]  
     
     df <- seq(1, length(data[[i]])) %>% data.frame(); colnames(df) <- "segID"
-    df$fName <- df_value[grep('^[A-Z]+', as.character(df_value))]
+    #df$fName <- df_value[grep('^[A-Z]+', as.character(df_value))]
+    df$fName <- df_value[!grepl('^[0-9]+|^@@|^\\-|^\\.', as.character(df_value))]
     df$faultName <- rep(df_value[grep("@@", as.character(df_value))], times = length(data[[i]]))
     df$faultID <- rep(i, times = length(data[[i]]))
     df$'Prob Activity' <- df_value[2]
@@ -101,9 +128,15 @@ fort2table <- function(faultfile){
     df$'Total nb of sources' <- length(df_value[grep('^[A-Z]+', df_value)])
     
     if (as.numeric(as.character(df_value[3])) == 1){
-      df$'sources' <- df_value[6]
+      df$'faultflag' <- df_value[6]
     } else {
-      df$'sources' <- paste(df_value[6 : (6 + as.numeric(as.character(df_value[3])) - 1)], collapse = "\n")
+      df$'faultflag' <- paste(df_value[6 : (6 + as.numeric(as.character(df_value[3])) - 1)], collapse = "\n")
+    }
+    
+    if (length(unique(df$segID)) != length(unique(df$fName))){ #same segname
+      new_segnameID <- letters[1:(length(unique(df$segID)))]
+      new_segname <- as.character(paste0(gsub(' ', '', unlist(df$fName)), new_segnameID))
+      df$fName <- new_segname
     }
     
 
@@ -119,32 +152,8 @@ fort2table <- function(faultfile){
       dn3$orderid <- 1:nrow(dn3)
       dn3$seg <- sapply(1:nrow(dn1), function(m){ combine_words(dn1[m, 2:(ncol(dn1))], sep = " ", and = '') }) %>% data.frame()
       
-      firstup <- function(x) {
-        substr(x, 1, 1) <- tolower(substr(x, 1, 1))
-        x
-      }
-      
       dn3[, 1] <- as.character(dn3[, 1]) %>% firstup()
-      
-      funfun <- function(nseq){
-        newname <- matrix()
-        if (nseq == "n_ftype"){
-          if (n_ftype > 0){
-            namelist <- c('fault Mech Model Wt for model', 'number of mechanisms for model', 
-                          'ftype for model', 'wts for observation for model')
-            n <- rep(1:n_ftype, each = 4)
-            newname <- paste0(namelist, n)
-          }
-        } else if (nseq == 'n_recur'){
-          if (n_recur > 0){
-            n <- rep(1:n_recur)
-            newname <- paste0('delta_M1, delta_M2, delta_M3 for model', n)
-          }
-        } 
-        return (newname)
-      }
-      
-      
+
       if (length(grep('^nTHick|number of fault thickness|number of fault widths', dn3[, 1])) != 0){
         n_thick <- dn3[grep('^nTHick|number of fault thickness|number of fault widths', dn3[, 1]), 'seg']
         n_thick <- as.numeric(as.character(n_thick$.))
@@ -159,7 +168,7 @@ fort2table <- function(faultfile){
       if (length(grep('nRecur', dn3[, 1])) != 0){
         n_recur <- dn3[grep('nRecur', dn3[, 1]), 'seg']
         n_recur <- as.numeric(as.character(n_recur$.))
-        if (n_recur != length(grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]))) stop(paste0('Missing parameters: delta_M1, delta_M2, delta_M3 (Fault:', i, ' Segment:', k, ')'))
+        if (n_recur != length(grep('delta_M1|pdf param for exp model', dn3[, 1]))) stop(paste0('Missing parameters: delta_M1, delta_M2, delta_M3 (Fault:', i, ' Segment:', k, ')'))
         dn3[grep('delta_M1, delta_M2,delta_M3|delta_M1, delta_M2, delta_M3|pdf param for exp model', dn3[, 1]), 1] <- funfun("n_recur")
       }
       
@@ -177,6 +186,19 @@ fort2table <- function(faultfile){
       
     }
     
+    if (ncol(dnall) > 3){
+      sum_of_seg <- ncol(dnall) - 2 #title & ID 
+      if (length(unique(as.character(unlist(dnall[1, 3:ncol(dnall)])))) != sum_of_seg){ #same segname
+        new_segnameID <- letters[1:(sum_of_seg)]
+        new_segname <- as.character(paste0(gsub(' ', '', unlist(dnall[1, 3:ncol(dnall)])), new_segnameID))
+        
+        dnall <- dnall %>% as.matrix()
+        dnall[1, 3:ncol(dnall) ] <- new_segname; 
+        dnall <- dnall %>% data.frame()
+      } 
+    }
+
+    #####################################################
     dnall <- dnall[order(dnall$orderid), ]; dnall$orderid <- NULL
     dnall <- as.data.frame(t(dnall), stringsAsFactors=FALSE)
     colnames(dnall) <- dnall[1, ]; dnall <- dnall[-1, ]

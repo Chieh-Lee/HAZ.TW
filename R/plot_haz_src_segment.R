@@ -4,7 +4,7 @@
 #' @import randomcoloR
 #' @import sp
 #'
-#' @param faultfile list: result of \code{\link{read_fault}}
+#' @param faults list: result of \code{\link{read_haz_src}}
 #' @param ID intrger: fault ID
 #'
 #' @export
@@ -12,9 +12,9 @@
 #' @return leaflet map
 
 
-plot_segment<-function(faultfile,ID){
+plot_haz_src_segment<-function(faults,ID){
   palette <- distinctColorPalette(20)
-  gg.2 <- faultfile[ID]
+  gg.2 <- faults[ID]
 
   map <- leaflet() %>% addTiles()
   for (i in c( 1:(length(gg.2)))){

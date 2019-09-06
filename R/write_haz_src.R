@@ -1,17 +1,18 @@
 #' @title Table to Fortran
 #' 
 #' @import knitr
-#' @param icoor numeric: The unit of the source coordinate, 0 is km, 1 is latitude and longitude
-#' @param inputfile character string: Table of 'fault.src'
-#' @param outputname character string: Set the new output name 
+#' @import stringr
+#' @param icoor numeric: The unit of the source coordinate, 0 is km, 1 is latitude and longitude. Default is 1.
+#' @param faults character: Table of 'fault.src'
+#' @param fault_out.src character: Set the new output name 
 #' 
 #' @export
 #'
-#' @return fortran file of \code{faultfile}
+#' @return fortran file of \code{faults}
 
-table2fort <- function(icoor, inputfile, outputname){
-  if (file.exists(outputname)) warning('File exists. Please set a new outputname.')
-  aa <- inputfile
+write_haz_src <- function(icoor = 1, faults, fault_out.src){
+  if (file.exists(fault_out.src)) warning('File exists. Please set a new outputname.')
+  aa <- faults
   pp <- function(paravalue, paraname){
     if (length(paravalue) == 0) warning(paste0('Missing parameter:', paraname, ' (Fault: ', i, '; Segment:', j, ')'))
     paste(paravalue, paraname, sep = '\t\t')
@@ -32,7 +33,7 @@ table2fort <- function(icoor, inputfile, outputname){
     seg_ot[3] <- paste(unique(segdata$`nSeg model`), 'nseg model', sep = '\t\t'); segdata$`nSeg model` <- NULL  #nseg model
     seg_ot[4] <- paste(unique(segdata$segWt), 'wts for nseg models', sep = '\t\t'); segdata$segWt <- NULL #wts for nseg models
     seg_ot[5] <- paste(unique(segdata$`Total nb of sources`), 'total nb of sources', sep = '\t\t'); segdata$`Total nb of sources` <- NULL#total nb of sources
-    seg_ot[6] <- unique(segdata$sources); segdata$sources <- NULL#sources 
+    seg_ot[6] <- unique(segdata$faultflag); segdata$faultflag <- NULL#sources 
     
     seg_ot <- seg_ot %>% data.frame()
     seg222 <- segdata[, colSums(is.na(segdata)) != nrow(segdata) ]
@@ -235,8 +236,7 @@ table2fort <- function(icoor, inputfile, outputname){
     
   }
   
-  unlink(outputname)
-  write.table(allall, file = outputname, quote = FALSE, row.names = FALSE, col.names = FALSE, na = "", append = TRUE) 
+  write.table(allall, file = fault_out.src, quote = FALSE, row.names = FALSE, col.names = FALSE, na = "", append = TRUE) 
   
   return(allall)
 }

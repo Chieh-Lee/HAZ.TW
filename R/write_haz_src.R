@@ -23,7 +23,7 @@ write_haz_src <- function(icoor = 1, faults, fault_out.src){
   all_ot[2] <- length(unique(aa$faultID))
   allall <- all_ot %>% data.frame()
   
-  for (i in unique(aa$faultName)){ 
+  for (i in unique(aa$faultName)[78]){ 
     
     seg_ot <- vector(); seg_ot2 <- vector()
     #fault information
@@ -79,7 +79,7 @@ write_haz_src <- function(icoor = 1, faults, fault_out.src){
       #number of b-value
       seg_ot2_b1 <- segdata[, grep('^number of b-values', names(segdata))] %>% pp(paraname = 'number of b-values')
       if (as.numeric(substr(seg_ot2_b1, 0, 2)) > 0){
-        seg_ot2_b2 <- segdata[, grep('^b-values', names(segdata))] %>% pp(paraname = 'b-values')
+        seg_ot2_b2 <- segdata[, grep('^b-value', names(segdata))] %>% pp(paraname = 'b-values')
         seg_ot2_b3 <- segdata[, grep('^weights for b-values', names(segdata))] %>% pp(paraname = 'weights for b-values')
         seg_ot2[7] <- paste(seg_ot2_b1, seg_ot2_b2, seg_ot2_b3, sep = '\r\n')
       } else {
@@ -200,9 +200,9 @@ write_haz_src <- function(icoor = 1, faults, fault_out.src){
         }
       }
       
-      seg_ot2[15] <- segdata[, grep('^minmag, magstep, hxStep',names(segdata))] %>% pp(paraname = 'minmag, magstep, hxStep, hzStep, nRupArea, nRupWidth, minDepth')
-      seg_ot2[16] <- segdata[, grep('^rupArea',names(segdata))] %>% pp(paraname = 'rupArea: a, b, sigma in log10 units. W&C all')
-      seg_ot2[17] <- segdata[, grep('^rupWidth',names(segdata))] %>% pp(paraname = 'rupWidth: a, b, sigma in log10 units. W&C all')
+      seg_ot2[15] <- segdata[, grep('minmag, magstep, hxStep',names(segdata))] %>% pp(paraname = 'minmag, magstep, hxStep, hzStep, nRupArea, nRupWidth, minDepth')
+      seg_ot2[16] <- segdata[, grep('rupArea',names(segdata))] %>% pp(paraname = 'rupArea: a, b, sigma in log10 units. W&C all')
+      seg_ot2[17] <- segdata[, grep('rupWidth',names(segdata))] %>% pp(paraname = 'rupWidth: a, b, sigma in log10 units. W&C all')
       
       #number of Fault Mechanism Models
       seg_ot2_fm1 <- segdata[, grep('^number of Fault Mechanism Models', names(segdata))] %>% pp(paraname = 'number of Fault Mechanism Models')

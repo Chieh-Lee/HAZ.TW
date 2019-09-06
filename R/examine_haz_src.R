@@ -53,6 +53,19 @@ examine_haz_src <- function(fault.src, fault_output){
     newf1[n] <- paste(aa_vk, aa_n, sep = '\t\t\t')
   }
   
+  #b-value
+  for (n in grep('number of b-value|Number of b-value', newf1)){
+    aa <- newf1[n] 
+    if (as.numeric(str_sub(aa, 0, 1)) != 0){
+      aa_v1 <- as.character(word(newf1[n + 1], sep = fixed('\t\t\t')))
+      vk <- strsplit(aa_v1,' |\t{1,}') %>% unlist()
+      vk <- vk[nchar(vk) != 0]
+      aa_vk <- combine_words(vk, sep = " ", and = '')
+      newf1[n + 1] <- paste(aa_vk, 'b-values', sep = '\t\t\t\t' )
+      newf1[n + 2] <- paste(aa_vk, 'weights for b-values', sep = '\t\t\t\t' )
+    } 
+  }
+  
   #rupArea
   for (n in grep('rupArea', newf1)){
     aa <- newf1[n] 
@@ -66,7 +79,7 @@ examine_haz_src <- function(fault.src, fault_output){
     newf1[n] <- paste(aa_vk, aa_n, sep = '\t\t\t')
   }
   
-  #check b-value
+  #check Act. Rates
   for (n in grep('number of Act. Rates|Number of Act. Rates|Number of activity rates|number of activity rates', newf1)){
     aa <- newf1[n] 
     if (as.numeric(str_sub(aa, 0, 1)) == 1){

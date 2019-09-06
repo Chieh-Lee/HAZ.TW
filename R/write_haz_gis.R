@@ -11,7 +11,7 @@
 #' @return shapefile of \code{fault_gis}
 
 write_haz_gis <- function(fault_gis, fault_gis_out, driver = "MapInfo File"){
-  if (file.exists(fault_gis_out)) warning('File exists. Please set a new outputname.')
+  #if (file.exists(fault_gis_out)) warning('File exists. Please set a new outputname.')
   for(i in 1:nrow(fault_gis)){
     fg_g <- fault_gis$lonlat[i]
     fg_g <- strsplit(fg_g, '\t|\n') %>% unlist() %>% as.numeric()

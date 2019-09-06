@@ -4,6 +4,7 @@
 #' @import here
 #' @import stringr
 #' @import magrittr
+#' @import knitr
 #' @importFrom stats setNames
 #' @importFrom stats na.omit
 #' 
@@ -69,8 +70,8 @@ read_haz_src <- function(fault.src){
         names(ca)[[length(ca)]] <- "npts_lonlat"
         
       } else if ( stype == 3 | stype == 4) { #source_type=3|4
-        ca[[5]] <- as.character(ca[[5]])
-        Data <- scan(here::here(dirname(fault.src), ca[[5]]), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
+        #Data <- scan(here::here(dirname(fault.src), names(ca)[[5]]), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
+        Data <- scan(paste(dirname(fault.src), names(ca)[[5]], sep = '/'), what = 'c', sep = '\n', allowEscapes = TRUE, quiet = TRUE)
         D1_1 <- Data[1:3] #information
         D1_2 <- Data[4:length(Data)]; D1_2 <- unlist(str_split(D1_2, " ")) #location
         D1_3 <- matrix(D1_2, (length(D1_2)/3), 3, byrow = TRUE) %>% data.frame()
@@ -119,7 +120,7 @@ read_haz_src <- function(fault.src){
     
     df <- seq(1, length(data[[i]])) %>% data.frame(); colnames(df) <- "segID"
     #df$fName <- df_value[grep('^[A-Z]+', as.character(df_value))]
-    df$fName <- df_value[!grepl('^[0-9]+|^@@|^\\-|^\\.', as.character(df_value))]
+    df$fName <- df_value[!grepl('^[0-9]+|^@@|^\\-|^\\.|.txt$|^\\s+', as.character(df_value))]
     df$faultName <- rep(df_value[grep("@@", as.character(df_value))], times = length(data[[i]]))
     df$faultID <- rep(i, times = length(data[[i]]))
     df$'Prob Activity' <- df_value[2]
